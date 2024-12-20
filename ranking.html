@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify風アルバム＆シングル検索</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #1DB954;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            color: white;
+        }
+        .search-bar {
+            padding: 10px;
+            width: 80%;
+            margin: 20px auto;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            color: white;
+        }
+        .category {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .category h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #1DB954;
+        }
+        .album-list, .single-list {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+        }
+        .album, .single {
+            margin: 10px;
+            text-align: center;
+            width: 150px;
+            color: white;
+        }
+        .album img, .single img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .album .title, .single .title {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .album .artist, .single .artist {
+            font-size: 12px;
+            color: #b3b3b3;
+        }
+        .album-list, .single-list {
+            flex-wrap: nowrap;
+        }
+        .album-list::-webkit-scrollbar, .single-list::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Spotify風アルバム＆シングル</h1>
+    </header>
+
+    <input type="text" class="search-bar" id="searchBar" placeholder="アーティストや曲名で検索...">
+
+    <div class="category">
+        <div>
+            <h2>アルバム</h2>
+            <div class="album-list" id="albumList">
+                <!-- アルバムがここに表示される -->
+            </div>
+        </div>
+        <div>
+            <h2>シングル</h2>
+            <div class="single-list" id="singleList">
+                <!-- シングルがここに表示される -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // サンプルデータ
+        const albums = [
+            { title: 'アルバム 1', artist: 'アーティスト A', imgSrc: 'https://via.placeholder.com/150', type: 'album' },
+            { title: 'アルバム 2', artist: 'アーティスト B', imgSrc: 'https://via.placeholder.com/150', type: 'album' },
+            { title: 'アルバム 3', artist: 'アーティスト C', imgSrc: 'https://via.placeholder.com/150', type: 'album' },
+        ];
+
+        const singles = [
+            { title: 'シングル 1', artist: 'アーティスト A', imgSrc: 'https://via.placeholder.com/150', type: 'single' },
+            { title: 'シングル 2', artist: 'アーティスト B', imgSrc: 'https://via.placeholder.com/150', type: 'single' },
+            { title: 'シングル 3', artist: 'アーティスト C', imgSrc: 'https://via.placeholder.com/150', type: 'single' },
+        ];
+
+        // アルバムとシングルの表示
+        function displayItems() {
+            const albumList = document.getElementById('albumList');
+            const singleList = document.getElementById('singleList');
+            albumList.innerHTML = '';
+            singleList.innerHTML = '';
+
+            albums.forEach(album => {
+                const albumElement = document.createElement('div');
+                albumElement.classList.add('album');
+                albumElement.innerHTML = `
+                    <img src="${album.imgSrc}" alt="${album.title}">
+                    <div class="title">${album.title}</div>
+                    <div class="artist">${album.artist}</div>
+                `;
+                albumList.appendChild(albumElement);
+            });
+
+            singles.forEach(single => {
+                const singleElement = document.createElement('div');
+                singleElement.classList.add('single');
+                singleElement.innerHTML = `
+                    <img src="${single.imgSrc}" alt="${single.title}">
+                    <div class="title">${single.title}</div>
+                    <div class="artist">${single.artist}</div>
+                `;
+                singleList.appendChild(singleElement);
+            });
+        }
+
+        // 検索機能
+        document.getElementById('searchBar').addEventListener('input', function() {
+            const searchQuery = this.value.toLowerCase();
+            const filteredAlbums = albums.filter(album => album.title.toLowerCase().includes(searchQuery) || album.artist.toLowerCase().includes(searchQuery));
+            const filteredSingles = singles.filter(single => single.title.toLowerCase().includes(searchQuery) || single.artist.toLowerCase().includes(searchQuery));
+
+            // フィルター後の表示
+            const albumList = document.getElementById('albumList');
+            const singleList = document.getElementById('singleList');
+            albumList.innerHTML = '';
+            singleList.innerHTML = '';
+
+            filteredAlbums.forEach(album => {
+                const albumElement = document.createElement('div');
+                albumElement.classList.add('album');
+                albumElement.innerHTML = `
+                    <img src="${album.imgSrc}" alt="${album.title}">
+                    <div class="title">${album.title}</div>
+                    <div class="artist">${album.artist}</div>
+                `;
+                albumList.appendChild(albumElement);
+            });
+
+            filteredSingles.forEach(single => {
+                const singleElement = document.createElement('div');
+                singleElement.classList.add('single');
+                singleElement.innerHTML = `
+                    <img src="${single.imgSrc}" alt="${single.title}">
+                    <div class="title">${single.title}</div>
+                    <div class="artist">${single.artist}</div>
+                `;
+                singleList.appendChild(singleElement);
+            });
+        });
+
+        // 初期表示
+        displayItems();
+    </script>
+</body>
+</html>
+
+ 
